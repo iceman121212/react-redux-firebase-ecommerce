@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { auth, handleUserProfile } from '../../firebase/utils'
 import Buttons from '../forms/Button'
 import FormInput from '../forms/FormInput'
@@ -13,39 +13,35 @@ const initialState = {
   errors: []
 }
 
-class Signup extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      ...initialState
-    }
+const Signup = props => {
+  const [state, setState] = useState({
+    ...initialState
+  })
 
-    this.handleChange = this.handleChange.bind(this)
-  }
-
-  handleChange(e) {
-    const { name, value } = e.target
-    this.setState({
+  const handleChange = event => {
+    const { name, value } = event.target
+    setState({
+      ...state,
       [name]: value,
     })
   }
 
-  handleFormSubmit = async event => {
+  const handleFormSubmit = async event => {
     event.preventDefault()
-    const { displayName, email, password, confirmPassword } = this.state
 
-    if (password !== confirmPassword) {
+    if (state.password !== state.confirmPassword) {
       const err = ['Passwords do not match']
-      this.setState({
+      setState({
+        ...state,
         errors: err
       })
       return
     }
 
     try {
-      const { user } = await auth.createUserWithEmailAndPassword(email, password)
-      await handleUserProfile(user, { displayName })
-      this.setState({
+      const { user } = await auth.createUserWithEmailAndPassword(state.email, state.password)
+      await handleUserProfile(user, { displayName: state.displayName })
+      setState({
         ...initialState
       })
     } catch (err) {
@@ -54,17 +50,18 @@ class Signup extends Component {
 
   }
 
-  render() {
-    const { displayName, email, password, confirmPassword, errors } = this.state
-    return (<div className="signup">
+  return (
+    <div className="signup">
       <div className="wrap">
         <h2>
           Signup
         </h2>
-
-        {errors.length > 0 && (
+        {console.log(typeof (state.errors))}
+        {console.log(typeof (state.errors.length))}
+        {console.log({ state })}
+        {state.errors.length > 0 && (
           <ul>
-            {errors.map((err, index) => {
+            {state.errors.map((err, index) => {
               return (
                 <li key={index}>
                   {err}
@@ -75,34 +72,34 @@ class Signup extends Component {
         )}
 
         <div className="formWrap">
-          <form onSubmit={this.handleFormSubmit}>
+          <form onSubmit={handleFormSubmit}>
             <FormInput
               type="text"
               name="displayName"
-              value={displayName}
+              value={state.displayName}
               placeholder="Full name"
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
             <FormInput
               type="email"
               name="email"
-              value={email}
+              value={state.email}
               placeholder="Email address"
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
             <FormInput
               type="password"
               name="password"
-              value={password}
+              value={state.password}
               placeholder="Password"
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
             <FormInput
               type="password"
               name="confirmPassword"
-              value={confirmPassword}
+              value={state.confirmPassword}
               placeholder="Confirm Password"
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
             <Buttons type="submit">
               Register
@@ -111,8 +108,7 @@ class Signup extends Component {
         </div>
       </div>
     </div>
-    )
-  }
+  )
 }
 
 export default Signup
