@@ -3,9 +3,18 @@ import './styles.scss'
 import Logo from './../../assets/logo.png'
 import { Link } from 'react-router-dom'
 import { auth } from '../../firebase/utils'
+import { useSelector } from 'react-redux'
 
 const Header = props => {
-  const { currentUser } = props
+  const currentUser = useSelector(state => state.user.currentUser)
+  console.log('Header component')
+  console.log({ currentUser })
+
+  const logOut = () => {
+    auth.signOut()
+    console.log({ currentUser })
+  }
+
   return (
     <header className="header">
       <div className="wrap">
@@ -16,8 +25,8 @@ const Header = props => {
           {currentUser && (
             <ul>
               <li>
-                <span onClick={() => auth.signOut()}>
-                  LogOut
+                <span onClick={logOut}>
+                  <Link to="/">LogOut</Link>
                 </span>
               </li>
             </ul>
