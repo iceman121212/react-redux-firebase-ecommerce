@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { withRouter } from 'react-router'
 import { auth, handleUserProfile } from '../../firebase/utils'
 import AuthWrapper from '../AuthWrapper'
 import Button from '../forms/Button'
@@ -46,6 +47,7 @@ const Signup = props => {
       setState({
         ...initialState
       })
+      props.history.push('/')
     } catch (err) {
       console.log(err)
     }
@@ -107,4 +109,4 @@ const Signup = props => {
   )
 }
 
-export default Signup
+export default withRouter(Signup)

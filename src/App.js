@@ -14,9 +14,11 @@ import Dashboard from './pages/Dashboard';
 import WithAuth from './hoc/withAuth'
 
 const App = props => {
-  console.log("App rendered");
-  const dispatch = useDispatch()
+
   const currentUser = useSelector(state => state.user.currentUser)
+  console.log('App component')
+  console.log({ currentUser })
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const authListener = auth.onAuthStateChanged(async userAuth => {
@@ -30,48 +32,45 @@ const App = props => {
           dispatch(setCurrentUser(user))
         })
       } else {
-        dispatch(setCurrentUser(null))
+        dispatch(setCurrentUser(userAuth))
       }
     })
     return () => {
       authListener()
     }
-  }, [dispatch])
-
-
-  console.log(currentUser);
+  }, [])
 
   return (
     <div className="App">
       <Switch>
         <Route exact path='/' render={() => (
-          <HomepageLayout currentUser={currentUser}>
+          <HomepageLayout>
             <Homepage />
           </HomepageLayout>
         )} />
-        <Route path='/registration' render={() => currentUser ? <Redirect to="/" /> : (
-          <MainLayout currentUser={currentUser}>
+        <Route path='/registration' render={() => (
+          <MainLayout>
             <Registration />
           </MainLayout>
         )} />
         <Route path='/login'
           render={() => currentUser ? <Redirect to="/" /> : (
-            <MainLayout currentUser={currentUser}>
+            <MainLayout>
               <Login />
             </MainLayout>
           )} />
         <Route path='/recovery' render={() => (
-          <MainLayout currentUser={currentUser}>
+          <MainLayout>
             <Recovery />
           </MainLayout>
         )} />
-        <WithAuth>
-          <Route path='/dashboard' render={() => (
-            <MainLayout currentUser={currentUser}>
+        <Route path='/dashboard' render={() => (
+          <WithAuth>
+            <MainLayout>
               <Dashboard />
             </MainLayout>
-          )} />
-        </WithAuth>
+          </WithAuth>
+        )} />
       </Switch>
     </div>
   )
