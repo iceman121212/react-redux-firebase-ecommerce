@@ -26,13 +26,24 @@ const Header = props => {
             <ul>
               <li>
                 <span onClick={logOut}>
+                  <li>
+                    <Link to="/dashboard">
+                      Dashboard
+                </Link>
+                  </li>
                   <Link to="/">LogOut</Link>
+
                 </span>
               </li>
             </ul>
           )}
           {!currentUser && (
             <ul>
+              <li>
+                <Link to="/dashboard">
+                  Dashboard
+                </Link>
+              </li>
               <li>
                 <Link to="/registration">
                   Register

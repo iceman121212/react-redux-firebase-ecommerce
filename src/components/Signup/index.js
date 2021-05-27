@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { auth, handleUserProfile } from '../../firebase/utils'
+import AuthWrapper from '../AuthWrapper'
+import Button from '../forms/Button'
 import Buttons from '../forms/Button'
 import FormInput from '../forms/FormInput'
 
@@ -49,65 +51,59 @@ const Signup = props => {
     }
 
   }
-
+  const configAuthWrapper = {
+    headline: 'Registration'
+  }
   return (
-    <div className="signup">
-      <div className="wrap">
-        <h2>
-          Signup
-        </h2>
-        {console.log(typeof (state.errors))}
-        {console.log(typeof (state.errors.length))}
-        {console.log({ state })}
-        {state.errors.length > 0 && (
-          <ul>
-            {state.errors.map((err, index) => {
-              return (
-                <li key={index}>
-                  {err}
-                </li>
-              )
-            })}
-          </ul>
-        )}
+    <AuthWrapper {...configAuthWrapper}>
+      {state.errors.length > 0 && (
+        <ul>
+          {state.errors.map((err, index) => {
+            return (
+              <li key={index}>
+                {err}
+              </li>
+            )
+          })}
+        </ul>
+      )}
 
-        <div className="formWrap">
-          <form onSubmit={handleFormSubmit}>
-            <FormInput
-              type="text"
-              name="displayName"
-              value={state.displayName}
-              placeholder="Full name"
-              onChange={handleChange}
-            />
-            <FormInput
-              type="email"
-              name="email"
-              value={state.email}
-              placeholder="Email address"
-              onChange={handleChange}
-            />
-            <FormInput
-              type="password"
-              name="password"
-              value={state.password}
-              placeholder="Password"
-              onChange={handleChange}
-            />
-            <FormInput
-              type="password"
-              name="confirmPassword"
-              value={state.confirmPassword}
-              placeholder="Confirm Password"
-              onChange={handleChange}
-            />
-            <Buttons type="submit">
-              Register
-            </Buttons>
-          </form>
-        </div>
+      <div className="formWrap">
+        <form onSubmit={handleFormSubmit}>
+          <FormInput
+            type="text"
+            name="displayName"
+            value={state.displayName}
+            placeholder="Full name"
+            handleChange={handleChange}
+          />
+          <FormInput
+            type="email"
+            name="email"
+            value={state.email}
+            placeholder="Email address"
+            handleChange={handleChange}
+          />
+          <FormInput
+            type="password"
+            name="password"
+            value={state.password}
+            placeholder="Password"
+            handleChange={handleChange}
+          />
+          <FormInput
+            type="password"
+            name="confirmPassword"
+            value={state.confirmPassword}
+            placeholder="Confirm Password"
+            handleChange={handleChange}
+          />
+          <Button type="submit">
+            Register
+            </Button>
+        </form>
       </div>
-    </div>
+    </AuthWrapper>
   )
 }
 

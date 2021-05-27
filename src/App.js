@@ -9,6 +9,9 @@ import Registration from './pages/Registration';
 import { auth, handleUserProfile } from './firebase/utils'
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentUser } from './redux/User/user.actions';
+import Recovery from './pages/Recovery';
+import Dashboard from './pages/Dashboard';
+import WithAuth from './hoc/withAuth'
 
 const App = props => {
   console.log("App rendered");
@@ -33,7 +36,7 @@ const App = props => {
     return () => {
       authListener()
     }
-  }, [auth])
+  }, [dispatch])
 
 
   console.log(currentUser);
@@ -57,6 +60,18 @@ const App = props => {
               <Login />
             </MainLayout>
           )} />
+        <Route path='/recovery' render={() => (
+          <MainLayout currentUser={currentUser}>
+            <Recovery />
+          </MainLayout>
+        )} />
+        <WithAuth>
+          <Route path='/dashboard' render={() => (
+            <MainLayout currentUser={currentUser}>
+              <Dashboard />
+            </MainLayout>
+          )} />
+        </WithAuth>
       </Switch>
     </div>
   )
