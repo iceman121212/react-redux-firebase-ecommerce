@@ -8,16 +8,15 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import { auth, handleUserProfile } from './firebase/utils'
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentUser } from './redux/User/user.actions';
+import { resetAllAuthForms, setCurrentUser } from './redux/User/user.actions';
 import Recovery from './pages/Recovery';
 import Dashboard from './pages/Dashboard';
 import WithAuth from './hoc/withAuth'
 
 const App = props => {
+  console.log('App component rendered')
 
   const currentUser = useSelector(state => state.user.currentUser)
-  console.log('App component')
-  console.log({ currentUser })
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -30,6 +29,7 @@ const App = props => {
             ...snapshot.data()
           }
           dispatch(setCurrentUser(user))
+          dispatch(resetAllAuthForms())
         })
       } else {
         dispatch(setCurrentUser(userAuth))

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { withRouter } from 'react-router'
-import { auth, handleUserProfile } from '../../firebase/utils'
+import { resetAllAuthForms, signUpUser } from '../../redux/User/user.actions'
 import AuthWrapper from '../AuthWrapper'
 import Button from '../forms/Button'
-import Buttons from '../forms/Button'
 import FormInput from '../forms/FormInput'
 
 import './styles.scss'
@@ -20,6 +20,23 @@ const Signup = props => {
   const [state, setState] = useState({
     ...initialState
   })
+  const signUpSuccess = useSelector(state => state.user.signUpSuccess)
+  const signUpError = useSelector(state => state.user.signUpError)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (signUpSuccess) {
+      setState({ ...initialState })
+      dispatch(resetAllAuthForms())
+      props.history.push('/')
+    }
+  }, [signUpSuccess])
+
+  useEffect(() => {
+    if (Array.isArray(signUpError) && signUpError.length > 0) {
+      setState({ ...state, errors: signUpError })
+    }
+  }, [signUpError])
 
   const handleChange = event => {
     const { name, value } = event.target
@@ -29,29 +46,11 @@ const Signup = props => {
     })
   }
 
-  const handleFormSubmit = async event => {
+  const handleFormSubmit = event => {
     event.preventDefault()
-
-    if (state.password !== state.confirmPassword) {
-      const err = ['Passwords do not match']
-      setState({
-        ...state,
-        errors: err
-      })
-      return
-    }
-
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(state.email, state.password)
-      await handleUserProfile(user, { displayName: state.displayName })
-      setState({
-        ...initialState
-      })
-      props.history.push('/')
-    } catch (err) {
-      console.log(err)
-    }
-
+    dispatch(signUpUser({
+      ...state
+    }))
   }
   const configAuthWrapper = {
     headline: 'Registration'

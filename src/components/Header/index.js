@@ -10,7 +10,7 @@ const Header = props => {
   console.log('Header component')
   console.log({ currentUser })
 
-  const logOut = () => {
+  const handleLogOut = () => {
     auth.signOut()
     console.log({ currentUser })
   }
@@ -29,7 +29,7 @@ const Header = props => {
                   My Account
                 </Link>
               </li>
-              <span onClick={logOut}>
+              <span onClick={handleLogOut}>
                 <li>
                   <Link to="/">LogOut</Link>
                 </li>
