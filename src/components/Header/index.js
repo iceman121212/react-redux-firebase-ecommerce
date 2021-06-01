@@ -2,18 +2,19 @@ import React from 'react'
 import './styles.scss'
 import Logo from './../../assets/logo.png'
 import { Link } from 'react-router-dom'
-import { auth } from '../../firebase/utils'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { signOutUserStart } from '../../redux/User/user.actions'
 
 const Header = props => {
+  const dispatch = useDispatch()
   const currentUser = useSelector(state => state.user.currentUser)
+
+  const signOut = () => {
+    console.log('signOut function called')
+    dispatch(signOutUserStart())
+  }
   console.log('Header component')
   console.log({ currentUser })
-
-  const handleLogOut = () => {
-    auth.signOut()
-    console.log({ currentUser })
-  }
 
   return (
     <header className="header">
@@ -29,7 +30,7 @@ const Header = props => {
                   My Account
                 </Link>
               </li>
-              <span onClick={handleLogOut}>
+              <span onClick={() => signOut()}>
                 <li>
                   <Link to="/">LogOut</Link>
                 </li>

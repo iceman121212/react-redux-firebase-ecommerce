@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react'
-import { Redirect, Route, Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 import './default.scss'
 import HomepageLayout from './layouts/HomepageLayout';
 import MainLayout from './layouts/MainLayout';
 import Homepage from './pages/Homepage';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
-import { auth, handleUserProfile } from './firebase/utils'
-import { useDispatch, useSelector } from 'react-redux';
-import { resetAllAuthForms, setCurrentUser } from './redux/User/user.actions';
+import { useDispatch } from 'react-redux';
+import { checkUserSesion } from './redux/User/user.actions';
 import Recovery from './pages/Recovery';
 import Dashboard from './pages/Dashboard';
 import WithAuth from './hoc/withAuth'
@@ -16,29 +15,11 @@ import WithAuth from './hoc/withAuth'
 const App = props => {
   console.log('App component rendered')
 
-  const currentUser = useSelector(state => state.user.currentUser)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const authListener = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await handleUserProfile(userAuth)
-        userRef.onSnapshot(snapshot => {
-          const user = {
-            id: snapshot.id,
-            ...snapshot.data()
-          }
-          dispatch(setCurrentUser(user))
-          dispatch(resetAllAuthForms())
-        })
-      } else {
-        dispatch(setCurrentUser(userAuth))
-      }
-    })
-    return () => {
-      authListener()
-    }
-  }, [])
+    dispatch(checkUserSesion())
+  }, [dispatch])
 
   return (
     <div className="App">
@@ -54,7 +35,7 @@ const App = props => {
           </MainLayout>
         )} />
         <Route path='/login'
-          render={() => currentUser ? <Redirect to="/" /> : (
+          render={() => (
             <MainLayout>
               <Login />
             </MainLayout>

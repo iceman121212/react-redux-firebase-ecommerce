@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { withRouter } from 'react-router'
-import { resetAllAuthForms, signUpUser } from '../../redux/User/user.actions'
+import { useHistory } from 'react-router'
+import { signUpUserStart } from '../../redux/User/user.actions'
 import AuthWrapper from '../AuthWrapper'
 import Button from '../forms/Button'
 import FormInput from '../forms/FormInput'
@@ -17,26 +17,27 @@ const initialState = {
 }
 
 const Signup = props => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+
   const [state, setState] = useState({
     ...initialState
   })
-  const signUpSuccess = useSelector(state => state.user.signUpSuccess)
-  const signUpError = useSelector(state => state.user.signUpError)
-  const dispatch = useDispatch()
+  const currentUser = useSelector(state => state.user.currentUser)
+  const userErr = useSelector(state => state.user.userErr)
 
   useEffect(() => {
-    if (signUpSuccess) {
+    if (currentUser) { //checking if user has signed up successfully
       setState({ ...initialState })
-      dispatch(resetAllAuthForms())
-      props.history.push('/')
+      history.push('/')
     }
-  }, [signUpSuccess])
+  }, [currentUser, dispatch, history])
 
-  useEffect(() => {
-    if (Array.isArray(signUpError) && signUpError.length > 0) {
-      setState({ ...state, errors: signUpError })
+  useEffect(() => { //checking for errors after user submitted sign-up information
+    if (Array.isArray(userErr) && userErr.length > 0) {
+      setState({ ...state, errors: userErr })
     }
-  }, [signUpError])
+  }, [state, userErr])
 
   const handleChange = event => {
     const { name, value } = event.target
@@ -48,7 +49,7 @@ const Signup = props => {
 
   const handleFormSubmit = event => {
     event.preventDefault()
-    dispatch(signUpUser({
+    dispatch(signUpUserStart({
       ...state
     }))
   }
@@ -108,4 +109,4 @@ const Signup = props => {
   )
 }
 
-export default withRouter(Signup)
+export default Signup

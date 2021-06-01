@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import EmailPassword from '../../components/EmailPassword'
 import './styles.scss'
 
