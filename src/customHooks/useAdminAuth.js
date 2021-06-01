@@ -1,14 +1,15 @@
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useHistory } from "react-router"
+import { checkUserIsAdmin } from "../Utils"
 
 
-const useAuth = props => {
-  const history = useHistory()
+const useAdminAuth = props => {
   const currentUser = useSelector(state => state.user.currentUser)
+  const history = useHistory()
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!checkUserIsAdmin(currentUser)) {
       history.push('/login')
     }
   }, [currentUser, history])
@@ -16,4 +17,4 @@ const useAuth = props => {
   return currentUser
 }
 
-export default useAuth
+export default useAdminAuth
