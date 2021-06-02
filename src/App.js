@@ -14,6 +14,7 @@ import WithAuth from './hoc/withAuth'
 import Admin from './pages/Admin';
 import WithAdminAuth from './hoc/withAdminAuth';
 import AdminToolbar from './components/AdminToolbar';
+import AdminLayout from './layouts/AdminLayout';
 
 const App = props => {
   console.log('App component rendered')
@@ -49,19 +50,19 @@ const App = props => {
             <Recovery />
           </MainLayout>
         )} />
-        <Route path='/admin' render={() => (
-          <WithAdminAuth>
-            <MainLayout>
-              <Admin />
-            </MainLayout>
-          </WithAdminAuth>
-        )} />
         <Route path='/dashboard' render={() => (
           <WithAuth>
             <MainLayout>
               <Dashboard />
             </MainLayout>
           </WithAuth>
+        )} />
+        <Route path='/admin' render={() => (
+          <WithAdminAuth>
+            <AdminLayout>
+              <Admin />
+            </AdminLayout>
+          </WithAdminAuth>
         )} />
       </Switch>
     </div>
