@@ -145,7 +145,7 @@ const Admin = props => {
                       return (
                         <tr key={index}>
                           <td>
-                            <img className="thumb" src={productThumbnail} />
+                            <img className="thumb" alt="ProductThumbnail" src={productThumbnail} />
                           </td>
                           <td>
                             {productName}

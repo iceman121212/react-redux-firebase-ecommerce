@@ -15,6 +15,7 @@ import Admin from './pages/Admin';
 import WithAdminAuth from './hoc/withAdminAuth';
 import AdminToolbar from './components/AdminToolbar';
 import AdminLayout from './layouts/AdminLayout';
+import Search from './pages/Search';
 
 const App = props => {
   console.log('App component rendered')
@@ -33,6 +34,11 @@ const App = props => {
           <HomepageLayout>
             <Homepage />
           </HomepageLayout>
+        )} />
+        <Route path='/search' render={() => (
+          <MainLayout>
+            <Search />
+          </MainLayout>
         )} />
         <Route path='/registration' render={() => (
           <MainLayout>
