@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
 import { fetchProductsStart } from '../../redux/Products/products.actions'
 import FormSelect from '../forms/FormSelect'
+import LoadMore from '../LoadMore'
 import Product from './Product'
 import './styles.scss'
 
@@ -11,6 +12,8 @@ const ProductResults = props => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { filterType } = useParams()
+
+  const { data, queryDoc, isLastPage } = products
 
   console.log('ProductResults component rendered')
   console.log({ products })
@@ -21,8 +24,8 @@ const ProductResults = props => {
     )
   }, [dispatch, filterType])
 
-  if (!Array.isArray(products)) return null
-  if (products.length < 1) {
+  if (!Array.isArray(data)) return null
+  if (data.length < 1) {
     return (
       <div className="products">
         <p>
@@ -35,6 +38,21 @@ const ProductResults = props => {
   const handleFilter = (e) => {
     const nextFilter = e.target.value
     history.push(`/search/${nextFilter}`)
+  }
+
+  const handleLoadMore = () => {
+    console.log(`handleLoadMore`)
+    dispatch(
+      fetchProductsStart({
+        filterType,
+        startAfterDoc: queryDoc,
+        persistProducts: data,
+      })
+    )
+  }
+
+  const configLoadMore = {
+    onLoadMoreEvt: handleLoadMore,
   }
 
   const configFilters = {
@@ -61,13 +79,15 @@ const ProductResults = props => {
       <FormSelect {...configFilters} />
 
       <div className="productResults">
-        {products.map((product, index) => {
+        {data.map((product, index) => {
           const { productThumbnail, productName, productPrice } = product
           if (!productThumbnail || !productName || typeof (productPrice) === 'undefined') return null
           const configProduct = { productThumbnail, productName, productPrice }
           return <Product key={index} {...configProduct} />
         })}
       </div>
+      {!isLastPage && <LoadMore {...configLoadMore} />}
+
     </div>
   )
 }
