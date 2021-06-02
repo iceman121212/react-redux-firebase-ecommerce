@@ -35,7 +35,12 @@ const App = props => {
             <Homepage />
           </HomepageLayout>
         )} />
-        <Route path='/search' render={() => (
+        <Route path='/search/:filterType' render={() => (
+          <MainLayout>
+            <Search />
+          </MainLayout>
+        )} />
+        <Route exact path='/search' render={() => (
           <MainLayout>
             <Search />
           </MainLayout>
