@@ -16,6 +16,7 @@ import WithAdminAuth from './hoc/withAdminAuth';
 import AdminToolbar from './components/AdminToolbar';
 import AdminLayout from './layouts/AdminLayout';
 import Search from './pages/Search';
+import ProductDetails from './pages/ProductDetails';
 
 const App = props => {
   console.log('App component rendered')
@@ -74,6 +75,11 @@ const App = props => {
               <Admin />
             </AdminLayout>
           </WithAdminAuth>
+        )} />
+        <Route path='/product/:productID' render={() => (
+          <MainLayout>
+            <ProductDetails />
+          </MainLayout>
         )} />
       </Switch>
     </div>

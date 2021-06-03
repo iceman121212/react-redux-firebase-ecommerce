@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addNewProductStart, deleteProductStart, fetchProductsStart } from './../../redux/Products/products.actions';
-import Modal from './../../components/Modal';
-import FormInput from './../../components/forms/FormInput';
-import FormSelect from './../../components/forms/FormSelect';
-import Button from './../../components/forms/Button';
-import './styles.scss';
-import LoadMore from '../../components/LoadMore';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addNewProductStart, deleteProductStart, fetchProductsStart } from './../../redux/Products/products.actions'
+import Modal from './../../components/Modal'
+import FormInput from './../../components/forms/FormInput'
+import FormSelect from './../../components/forms/FormSelect'
+import Button from './../../components/forms/Button'
+import './styles.scss'
+import LoadMore from '../../components/LoadMore'
+import CKEditor from 'ckeditor4-react'
 
 const Admin = props => {
   const dispatch = useDispatch();
   const products = useSelector(state => state.productsData.products)
   const { data, queryDoc, isLastPage } = products
 
-  const [hideModal, setHideModal] = useState(true);
-  const [productCategory, setProductCategory] = useState('mens');
-  const [productName, setProductName] = useState('');
-  const [productThumbnail, setProductThumbnail] = useState('');
-  const [productPrice, setProductPrice] = useState(0);
+  const [hideModal, setHideModal] = useState(true)
+  const [productCategory, setProductCategory] = useState('mens')
+  const [productName, setProductName] = useState('')
+  const [productThumbnail, setProductThumbnail] = useState('')
+  const [productPrice, setProductPrice] = useState(0)
+  const [productDesc, setProductDesc] = useState('')
 
   useEffect(() => {
     dispatch(
@@ -38,6 +40,7 @@ const Admin = props => {
     setProductName('')
     setProductThumbnail('')
     setProductPrice(0)
+    setProductDesc('')
   }
 
   const handleSubmit = e => {
@@ -48,6 +51,7 @@ const Admin = props => {
         productName,
         productThumbnail,
         productPrice,
+        productDesc,
       }))
     resetForm()
   };
@@ -122,6 +126,9 @@ const Admin = props => {
               handleChange={e => setProductPrice(e.target.value)}
             />
 
+            <CKEditor
+              onChange={evt => setProductDesc(evt.editor.getData())}
+            />
             <br />
 
             <Button type="submit">

@@ -82,7 +82,7 @@ const ProductResults = props => {
         {data.map((product, index) => {
           const { productThumbnail, productName, productPrice } = product
           if (!productThumbnail || !productName || typeof (productPrice) === 'undefined') return null
-          const configProduct = { productThumbnail, productName, productPrice }
+          const configProduct = { ...product }
           return <Product key={index} {...configProduct} />
         })}
       </div>
