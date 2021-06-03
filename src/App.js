@@ -17,6 +17,7 @@ import AdminToolbar from './components/AdminToolbar';
 import AdminLayout from './layouts/AdminLayout';
 import Search from './pages/Search';
 import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
 
 const App = props => {
   console.log('App component rendered')
@@ -79,6 +80,11 @@ const App = props => {
         <Route path='/product/:productID' render={() => (
           <MainLayout>
             <ProductDetails />
+          </MainLayout>
+        )} />
+        <Route path='/cart' render={() => (
+          <MainLayout>
+            <Cart />
           </MainLayout>
         )} />
       </Switch>

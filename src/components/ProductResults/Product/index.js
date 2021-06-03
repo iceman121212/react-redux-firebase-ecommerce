@@ -1,11 +1,12 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { addToCart } from '../../../redux/Cart/cart.actions'
 import Button from '../../forms/Button'
 
 const Product = (product) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const {
     documentID,
     productThumbnail,
@@ -28,6 +29,7 @@ const Product = (product) => {
     dispatch(
       addToCart(product)
     )
+    history.push('/cart')
   }
 
   return (

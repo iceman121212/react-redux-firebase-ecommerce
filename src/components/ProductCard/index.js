@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 import { addToCart } from '../../redux/Cart/cart.actions'
 import { fetchProductStart, setProduct } from '../../redux/Products/products.actions'
 import Button from '../forms/Button'
@@ -8,6 +8,7 @@ import './styles.scss'
 
 const ProductCard = ({ }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const { productID } = useParams()
   const product = useSelector(state => state.productsData.product)
   const {
@@ -38,6 +39,7 @@ const ProductCard = ({ }) => {
     dispatch(
       addToCart(product)
     )
+    history.push('/cart')
   }
 
   return (

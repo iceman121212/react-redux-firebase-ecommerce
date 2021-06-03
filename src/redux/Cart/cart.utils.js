@@ -35,3 +35,46 @@ export const handleAddToCart = ({
     }
   ]
 }
+
+export const handleRemoveCartItem = ({
+  prevCartItems,
+  cartItemToRemove,
+}) => {
+  return prevCartItems.filter((item) => cartItemToRemove.documentID !== item.documentID)
+}
+
+export const handleIncrementCartItem = ({
+  prevCartItems,
+  cartItemToIncrement,
+}) => {
+  return prevCartItems.map((item) => {
+    if (item.documentID === cartItemToIncrement.documentID)
+      return {
+        ...item,
+        quantity: item.quantity + 1,
+      }
+    return item
+  })
+}
+
+export const handleDecrementCartItem = ({
+  prevCartItems,
+  cartItemToDecrement,
+}) => {
+
+  const existingCartItem = prevCartItems.find(item => item.documentID === cartItemToDecrement.documentID)
+
+  if (existingCartItem.quantity === 1) {
+    return prevCartItems.filter(item => item.documentID !== cartItemToDecrement.documentID)
+  }
+
+  return prevCartItems.map((item) => {
+    if (item.documentID === cartItemToDecrement.documentID) {
+      return {
+        ...item,
+        quantity: item.quantity - 1,
+      }
+    }
+    return item
+  })
+}
