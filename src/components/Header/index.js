@@ -4,10 +4,14 @@ import Logo from './../../assets/logo.png'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { signOutUserStart } from '../../redux/User/user.actions'
+import { selectCartItemsCount } from '../../redux/Cart/cart.selectors'
 
 const Header = props => {
   const dispatch = useDispatch()
   const currentUser = useSelector(state => state.user.currentUser)
+  const totalNumCartItems = useSelector(state => selectCartItemsCount(state))
+  // const cartItemCount = useSelector(state => state.cartData.cartItems)
+  // .reduce((acc, item) => item.quantity + acc, 0)
 
   const signOut = () => {
     console.log('signOut function called')
@@ -39,34 +43,39 @@ const Header = props => {
         </nav>
 
         <div className="callToActions">
-          {currentUser && (
-            <ul>
+          <ul>
+            <li>
+              {`Your Cart (${totalNumCartItems})`}
+            </li>
+
+            {currentUser && [
               <li>
                 <Link to="/dashboard">
                   My Account
                 </Link>
-              </li>
+              </li>,
               <span onClick={() => signOut()}>
                 <li>
                   <Link to="/">LogOut</Link>
                 </li>
               </span>
-            </ul>
-          )}
-          {!currentUser && (
-            <ul>
+
+            ]}
+
+            {!currentUser && [
+
               <li>
                 <Link to="/registration">
                   Register
                 </Link>
-              </li>
+              </li>,
               <li>
                 <Link to="/login">
                   Login
                 </Link>
               </li>
-            </ul>
-          )}
+            ]}
+          </ul>
         </div>
       </div >
     </header >

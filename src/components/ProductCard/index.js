@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
+import { addToCart } from '../../redux/Cart/cart.actions'
 import { fetchProductStart, setProduct } from '../../redux/Products/products.actions'
 import Button from '../forms/Button'
 import './styles.scss'
@@ -32,11 +33,18 @@ const ProductCard = ({ }) => {
     type: 'button'
   }
 
+  const handleAddToCart = (product) => {
+    if (!product) return
+    dispatch(
+      addToCart(product)
+    )
+  }
+
   return (
     <div>
       <div className="productCard">
         <div className="hero">
-          <img src={productThumbnail} />
+          <img alt="thumbnail" src={productThumbnail} />
         </div>
         <div className="productDetails">
           <ul>
@@ -52,7 +60,10 @@ const ProductCard = ({ }) => {
             </li>
             <li>
               <div className="addToCart">
-                <Button {...configAddToCartBtn}>
+                <Button
+                  {...configAddToCartBtn}
+                  onClick={(evt) => handleAddToCart(product)}
+                >
                   Add to cart
                 </Button>
               </div>
