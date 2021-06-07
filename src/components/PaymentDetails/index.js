@@ -10,6 +10,7 @@ import { createStructuredSelector } from 'reselect'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../../redux/Cart/cart.actions'
 import { useHistory } from 'react-router'
+import { saveOrderHistory } from '../../redux/Orders/orders.actions'
 
 
 const initialAddressState = {
@@ -38,7 +39,7 @@ const PaymentDetails = () => {
 
   useEffect(() => {
     if (itemCount < 1) {
-      history.push('/')
+      history.push('/dashboard')
     }
   }, [history, itemCount])
 
@@ -113,11 +114,9 @@ const PaymentDetails = () => {
                 };
               })
             }
-
-
-            // dispatch(
-            //   saveOrderHistory(configOrder)
-            // );
+            dispatch(
+              saveOrderHistory(configOrder)
+            );
           });
 
       })

@@ -19,6 +19,7 @@ import Search from './pages/Search';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import Payment from './pages/Payment';
+import Order from './pages/OrderDetails';
 
 const App = props => {
   console.log('App component rendered')
@@ -68,6 +69,13 @@ const App = props => {
           <WithAuth>
             <MainLayout>
               <Dashboard />
+            </MainLayout>
+          </WithAuth>
+        )} />
+        <Route path='/order/:orderID' render={() => (
+          <WithAuth>
+            <MainLayout>
+              <Order />
             </MainLayout>
           </WithAuth>
         )} />
