@@ -19,3 +19,7 @@ export const decrementCartItem = (cartItem) => ({
   type: cartTypes.DECREMENT_CART_ITEM,
   payload: cartItem,
 })
+
+export const clearCart = () => ({
+  type: cartTypes.CLEAR_CART,
+})

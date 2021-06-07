@@ -18,6 +18,7 @@ import AdminLayout from './layouts/AdminLayout';
 import Search from './pages/Search';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
+import Payment from './pages/Payment';
 
 const App = props => {
   console.log('App component rendered')
@@ -86,6 +87,13 @@ const App = props => {
           <MainLayout>
             <Cart />
           </MainLayout>
+        )} />
+        <Route path='/payment' render={() => (
+          <WithAuth>
+            <MainLayout>
+              <Payment />
+            </MainLayout>
+          </WithAuth>
         )} />
       </Switch>
     </div>
